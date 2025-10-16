@@ -78,6 +78,15 @@ Weitere nützliche Optionen:
 4. **Scheduler**: Der Bot kann entweder einmalig (`--once`) oder dauerhaft im
    angegebenen Intervall laufen.
 
+## Automatischer Betrieb via GitHub Actions
+
+Das Repository enthält unter `.github/workflows/newsfeed.yml` einen Workflow,
+der den Bot stündlich über GitHub Actions startet (`cron: 0 * * * *`). Damit
+die Benachrichtigungen funktionieren, muss im Repository ein Secret
+`NEWSFEED_WEBHOOK_URL` mit der gewünschten Discord-Webhook-URL hinterlegt
+werden. Der Workflow kann außerdem jederzeit manuell über den "Run workflow"-
+Button gestartet werden.
+
 ## Hinweise
 
 * Wenn die Seite den Bot trotzdem blockt, empfiehlt es sich, den Intervall zu
