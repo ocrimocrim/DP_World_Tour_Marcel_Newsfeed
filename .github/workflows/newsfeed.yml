@@ -1,0 +1,39 @@
+name: Marcel Schneider Newsfeed
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  run-newsfeed:
+    runs-on: ubuntu-latest
+    env:
+      NEWSFEED_WEBHOOK_URL: ${{ secrets.NEWSFEED_WEBHOOK_URL }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run newsfeed collector
+        if: env.NEWSFEED_WEBHOOK_URL != ''
+        run: |
+          python -m newsfeed --once
+
+      - name: Warn about missing webhook secret
+        if: env.NEWSFEED_WEBHOOK_URL == ''
+        run: |
+          echo "NEWSFEED_WEBHOOK_URL secret is not configured."
+          exit 1
