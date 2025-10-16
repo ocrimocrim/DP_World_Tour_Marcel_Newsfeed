@@ -4,11 +4,9 @@ Dieser Python-Bot ruft regelmäßig die News-Seite von Marcel Schneider auf,
 archiviert alle gefundenen Artikel in einer SQLite-Datenbank und sendet neue
 Meldungen in einen Discord-Channel via Webhook.
 
-Die Zielseite setzt auf ein recht strenges Bot-Schutzsystem. Darum versucht der
-Scraper zunächst, die Seite mit
-[curl_cffi](https://github.com/yifeikong/curl_cffi) und einem echten Chrome-
-Fingerprint abzurufen und fällt anschließend (falls nötig) auf
-[cloudscraper](https://github.com/VeNoMouS/cloudscraper) zurück.
+Die Zielseite setzt auf ein recht strenges Bot-Schutzsystem. Darum benutzt der
+Scraper [cloudscraper](https://github.com/VeNoMouS/cloudscraper), um sich wie ein
+vollwertiger Browser zu verhalten.
 
 ## Setup
 
@@ -68,9 +66,8 @@ Weitere nützliche Optionen:
 
 ## Funktionsweise
 
-1. **Scraper**: Ruft die Seite bevorzugt per `curl_cffi` (und fällt bei Bedarf
-   auf `cloudscraper` zurück) ab und extrahiert die im Next.js-JSON
-   (`__NEXT_DATA__`) enthaltenen News.
+1. **Scraper**: Ruft die Seite per `cloudscraper` ab und extrahiert die im
+   Next.js-JSON (`__NEXT_DATA__`) enthaltenen News.
 2. **Archiv**: Speichert jeden News-Eintrag (inkl. Original-Payload) in einer
    SQLite-Datenbank. Zusätzlich wird nach jedem Lauf eine JSONL-Datei im Ordner
    `archive/` aktualisiert, damit man die Historie direkt im Repo einsehen
